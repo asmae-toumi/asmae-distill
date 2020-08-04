@@ -15,7 +15,7 @@ output:
 
 Hi friends, 
 
-I'm just trying out Thomas Mock's tutorial on website making. This one doesn't deserve the very moody and sometimes mean Hugo. 
+I'm just trying out Thomas Mock's tutorial on website making. This one doesn't need the very moody and sometimes mean Hugo. 
 
 Let's do some math:
 
@@ -23,6 +23,6 @@ Let's do some math:
 2+3
 ```
 
-Powerful.
+Powerful!
 
 
