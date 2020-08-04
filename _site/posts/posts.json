@@ -1,0 +1,18 @@
+[
+  {
+    "path": "posts/welcome/",
+    "title": "Welcome to Asmae Distill",
+    "description": "Just saying hello to all my freinds",
+    "author": [
+      {
+        "name": "Asmae Toumi",
+        "url": "https://twitter.com/asmae_toumi"
+      }
+    ],
+    "date": "2020-08-03",
+    "categories": [],
+    "preview": {},
+    "last_modified": "2020-08-03T21:01:03-04:00",
+    "input_file": "welcome.utf8.md"
+  }
+]

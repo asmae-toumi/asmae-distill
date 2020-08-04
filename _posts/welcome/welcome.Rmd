@@ -1,0 +1,28 @@
+---
+title: "Welcome to Asmae Distill"
+description: |
+  Just saying hello to all my freinds
+author:
+  - name: Asmae Toumi
+    url: https://twitter.com/asmae_toumi 
+    affiliation: The internet
+    affiliation_url: www.google.com
+date: 08-03-2020
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+Hi friends, 
+
+I'm just trying out Thomas Mock's tutorial on website making. This one doesn't deserve the very moody and sometimes mean Hugo. 
+
+Let's do some math:
+
+```{r}
+2+3
+```
+
+Powerful.
+
+
