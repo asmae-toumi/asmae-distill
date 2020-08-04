@@ -4,3 +4,11 @@
   font-size: 20px;
   font-weight: 900;
 }
+
+body {
+  background-color: #FF1493;
+}
+
+.distill-site-nav a:hover {
+  color: #383838;
+}
