@@ -1,3 +1,6 @@
-body {
+.distill-site-nav {
+  color: #C0C0C0; 
   background-color: #FFA3AF;
+  font-size: 20px;
+  font-weight: 900;
 }
