@@ -1,7 +1,7 @@
 ---
-title: "Welcome to Asmae Distill"
+title: "Welcome"
 description: |
-  Just saying hello to all my freinds
+  I'm here to share data science stuff
 author:
   - name: Asmae Toumi
     url: https://twitter.com/asmae_toumi 
@@ -13,16 +13,6 @@ output:
     self_contained: false
 ---
 
-Hi friends, 
-
-I'm just trying out Thomas Mock's tutorial on website making. This one doesn't need the very moody and sometimes mean Hugo. 
-
-Let's do some math:
-
-```{r}
-2+3
-```
-
-Powerful!
+Hope you enjoy! 
 
 
