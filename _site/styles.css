@@ -1,6 +1,6 @@
 .distill-site-nav {
-  color: #230bd9; 
-  background-color: #FFA3AF;
+  color: #a89ea0; 
+  background-color: #fcf2f4;
   font-size: 20px;
   font-weight: 900;
 }
@@ -10,5 +10,5 @@ body {
 }
 
 .distill-site-nav a:hover {
-  color: #230bd9;
+  color: #4a3f41;
 }
