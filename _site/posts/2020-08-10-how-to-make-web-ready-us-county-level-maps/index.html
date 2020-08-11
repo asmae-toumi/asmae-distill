@@ -1408,6 +1408,8 @@ mapdeck(token = Sys.getenv(&quot;MAPBOX_PUBLIC_TOKEN&quot;),
         location = c(-98.7382803, 31.7678448)) # if it doesn&#39;t show up in your viewer, view in browser</code></pre>
 </div>
 <p>Now that it’s in R, you can further edit it and even place it in a Shiny app using <code>mapdeckOutput()</code> in the UI and <code>renderMapdeck()</code> in the server!</p>
+<p>The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with <strong>Mapbox GL JS</strong>, which is Mapbox’s JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the <code>index.html</code> in my Github. Be sure to include your own access token before rendering it.</p>
+<p>Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. This is why I like workflow 2, because nothing is better than FREE.</p>
 <h2 id="workflow-2-r2d3map">Workflow 2: r2d3map</h2>
 <p>The amazing dreamRs team is behind the {r2d3maps} package which allows you to make D3 maps in a flash. Check out their documentation to get a taste of what you can make. You can also try out my fully worked example on Github. It’s absurdly easy to get your map up on the web using Shiny:</p>
 <div class="layout-chunk" data-layout="l-body">

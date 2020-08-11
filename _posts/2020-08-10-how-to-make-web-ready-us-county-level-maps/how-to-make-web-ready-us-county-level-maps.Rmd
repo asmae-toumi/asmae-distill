@@ -100,7 +100,12 @@ mapdeck(token = Sys.getenv("MAPBOX_PUBLIC_TOKEN"),
         location = c(-98.7382803, 31.7678448)) # if it doesn't show up in your viewer, view in browser
 ```
 
+
 Now that it's in R, you can further edit it and even place it in a Shiny app using `mapdeckOutput()` in the UI and `renderMapdeck()` in the server!
+
+The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with **Mapbox GL JS**, which is Mapbox's JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the `index.html` in my Github. Be sure to include your own access token before rendering it.
+
+Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. This is why I like workflow 2, because nothing is better than FREE. 
 
 
 ## Workflow 2: r2d3map 
