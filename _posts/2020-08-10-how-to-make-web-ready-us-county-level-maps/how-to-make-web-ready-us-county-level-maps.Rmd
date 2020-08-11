@@ -15,7 +15,7 @@ Code is up on my github at <https://github.com/asmae-toumi/spatialR> and here I'
 
 ## Workflow 1: Mapbox
 
-Mapbox has been picking up tons of steam as of late. You might've seen that it's what the New York Times uses for their COVID-19 maps: <https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html>. I was impressed with how rapidly it loaded in my browser and how fast the zoom was. I decided to figure out how to make a map with Mapbox because the Leaflet ones I was making for US county-level data was just too slow. 
+Mapbox has been picking up tons of steam as of late. You might've seen that it's what the New York Times uses for their COVID-19 maps: <https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html>. I was impressed with how rapidly they loaded in my browser and how fast the zooming was. I decided to figure out how to make a map with Mapbox because the Leaflet ones I was making for US county-level data were just too slow. 
 
 Here's how I did it with Mapbox:
 
@@ -50,7 +50,7 @@ data <-
   ms_simplify()
 ```
 
-Your data is of class sf now!
+Your data is of class `sf` now!
 
 ### Step 3 
 
@@ -105,14 +105,14 @@ Now that it's in R, you can further edit it and even place it in a Shiny app usi
 
 The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with **Mapbox GL JS**, which is Mapbox's JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the `index.html` in my Github. Be sure to include your own access token before rendering it.
 
-Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. This is why I like workflow 2, because nothing is better than FREE. 
+Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. **This is why I like workflow 2, because nothing is better than FREE**. 
 
 
 ## Workflow 2: r2d3map 
 
 ### Using `d3_map()`: 
 
-The amazing dreamRs team is behind the **{r2d3maps}** package which allows you to make **D3** maps in a flash. Check out their documentation to get a taste of what you can make. You can also try out my fully worked example on Github. It's absurdly easy to get your map up on the web using **{Shiny}**:
+The amazing dreamRs team is behind the **{r2d3maps}** package which allows you to make **D3** maps in a flash. Check out their documentation to get a taste of what you can make: <https://github.com/dreamRs/r2d3maps>. You can also try out my fully worked out examples on Github. I have a regular R script, and a quick demo on **{Shiny}**. It's absurdly easy to get your map up on the web using {Shiny}:
 
 ```{r eval = F, echo = T}
 # UI ----------------------------------------------------------------------
@@ -164,7 +164,7 @@ shinyApp(ui = ui, server = server)
 
 ### Make your own
 
-You don't have to use `d3_map()`, you can make your using pure D3 code. 
+You don't have to use `d3_map()`, you can make your own using pure D3 code. 
 
 First, you need to convert your data from an `sf` object to a `topojson` object using the handy `r2d3map()` command:
 

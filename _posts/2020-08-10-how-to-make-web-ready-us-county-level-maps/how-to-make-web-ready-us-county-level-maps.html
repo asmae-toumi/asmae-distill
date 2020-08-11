@@ -975,7 +975,7 @@
 <div class="d-article">
 <p>Code is up on my github at <a href="https://github.com/asmae-toumi/spatialR" class="uri">https://github.com/asmae-toumi/spatialR</a> and here I’ll rapidly go over the two workflows I like. If you see something wrong or need more explaining, hit me up on Twitter.</p>
 <h2 id="workflow-1-mapbox">Workflow 1: Mapbox</h2>
-<p>Mapbox has been picking up tons of steam as of late. You might’ve seen that it’s what the New York Times uses for their COVID-19 maps: <a href="https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html" class="uri">https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html</a>. I was impressed with how rapidly it loaded in my browser and how fast the zoom was. I decided to figure out how to make a map with Mapbox because the Leaflet ones I was making for US county-level data was just too slow.</p>
+<p>Mapbox has been picking up tons of steam as of late. You might’ve seen that it’s what the New York Times uses for their COVID-19 maps: <a href="https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html" class="uri">https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html</a>. I was impressed with how rapidly they loaded in my browser and how fast the zooming was. I decided to figure out how to make a map with Mapbox because the Leaflet ones I was making for US county-level data were just too slow.</p>
 <p>Here’s how I did it with Mapbox:</p>
 <h3 id="step-1">Step 1</h3>
 <p>Kyle Walker made an awesome package that allows us to interface with Mapbox’s API called <strong>{mapboxapi}</strong>. Install it in R:</p>
@@ -1003,7 +1003,7 @@ data &lt;-
   geo_join(data, by_sp = &quot;GEOID&quot;, by_df = &quot;GEOID&quot;) %&gt;% 
   ms_simplify()</code></pre>
 </div>
-<p>Your data is of class sf now!</p>
+<p>Your data is of class <code>sf</code> now!</p>
 <h3 id="step-3">Step 3</h3>
 <p>Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn’t let you. This is when <strong>Tippecanoe</strong> comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an “mbtiles” file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are ligthning fast.</p>
 <p>You need to install Tippecanoe via your terminal using homebrew. If you don’t have homebrew, go here and download it: <a href="https://brew.sh" class="uri">https://brew.sh</a>.</p>
@@ -1042,10 +1042,10 @@ mapdeck(token = Sys.getenv(&quot;MAPBOX_PUBLIC_TOKEN&quot;),
 </div>
 <p>Now that it’s in R, you can further edit it and even place it in a Shiny app using <code>mapdeckOutput()</code> in the UI and <code>renderMapdeck()</code> in the server!</p>
 <p>The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with <strong>Mapbox GL JS</strong>, which is Mapbox’s JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the <code>index.html</code> in my Github. Be sure to include your own access token before rendering it.</p>
-<p>Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. This is why I like workflow 2, because nothing is better than FREE.</p>
+<p>Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. <strong>This is why I like workflow 2, because nothing is better than FREE</strong>.</p>
 <h2 id="workflow-2-r2d3map">Workflow 2: r2d3map</h2>
 <h3 id="using-d3_map">Using <code>d3_map()</code>:</h3>
-<p>The amazing dreamRs team is behind the <strong>{r2d3maps}</strong> package which allows you to make <strong>D3</strong> maps in a flash. Check out their documentation to get a taste of what you can make. You can also try out my fully worked example on Github. It’s absurdly easy to get your map up on the web using <strong>{Shiny}</strong>:</p>
+<p>The amazing dreamRs team is behind the <strong>{r2d3maps}</strong> package which allows you to make <strong>D3</strong> maps in a flash. Check out their documentation to get a taste of what you can make: <a href="https://github.com/dreamRs/r2d3maps" class="uri">https://github.com/dreamRs/r2d3maps</a>. You can also try out my fully worked out examples on Github. I have a regular R script, and a quick demo on <strong>{Shiny}</strong>. It’s absurdly easy to get your map up on the web using {Shiny}:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 # UI ----------------------------------------------------------------------
@@ -1095,7 +1095,7 @@ server &lt;- function(input, output) {
 shinyApp(ui = ui, server = server)</code></pre>
 </div>
 <h3 id="make-your-own">Make your own</h3>
-<p>You don’t have to use <code>d3_map()</code>, you can make your using pure D3 code.</p>
+<p>You don’t have to use <code>d3_map()</code>, you can make your own using pure D3 code.</p>
 <p>First, you need to convert your data from an <code>sf</code> object to a <code>topojson</code> object using the handy <code>r2d3map()</code> command:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
