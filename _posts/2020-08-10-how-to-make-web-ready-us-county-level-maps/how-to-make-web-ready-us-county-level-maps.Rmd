@@ -21,7 +21,7 @@ Mapbox has been picking up tons of steam as of late. You might've seen that it's
 
 Here's how I did it with Mapbox:
 
-### Step 1
+### Step 1: Set up
 
 Kyle Walker made an awesome package that allows us to interface with Mapbox's API called **{mapboxapi}**. Install it in R:
 
@@ -36,7 +36,7 @@ library(mapboxapi)
 mb_access_token("pk.eyas...", install = TRUE)
 ```
 
-### Step 2 
+### Step 2: Get geometries
 
 Fetch the geometries you need. Here, I get US counties from **{tigris}**. Then, I join them to my data and finally simplify the geometries to make them more lightweight using `ms_simplify()` from the **{rmapshaper}** package. 
 
@@ -54,7 +54,7 @@ data <-
 
 Your data is of class `sf` now!
 
-### Step 3 
+### Step 3: Optimize geometries 
 
 Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn't let you. This is when **Tippecanoe** comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an "mbtiles" file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are lightning fast.
 
@@ -75,7 +75,7 @@ tippecanoe(
   layer_name = "my_tiles") 
 ```
 
-### Step 4
+### Step 4: Upload to API
 
 Once your mbtiles file is created, you need to upload it to Mapbox using `upload_tiles()`:
 
@@ -91,7 +91,7 @@ Go to Mapbox Studio. You should see your mbtiles uploaded. Start styling!
 If you want to start from *something*, you can tinker with mine by adding my map to your styles using this link: <https://api.mapbox.com/styles/v1/atoumi/ckddsbc903xey1io2y1nxiowx.html?fresh=true&title=copy&access_token=pk.eyJ1IjoiYXRvdW1pIiwiYSI6ImNrZGFqM3lhZzBpYjkyeXJ5djVxdXozZ2gifQ.N6IaEvOeboUvhKxjgSDPnQ>  
 
 
-### Step 5
+### Step 5: Bring it back to R
 
 When you're done styling, you can either publish directly or bring it back to R using the **{mapdeck}** package. 
 

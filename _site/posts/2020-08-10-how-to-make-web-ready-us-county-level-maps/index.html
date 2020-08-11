@@ -1344,11 +1344,11 @@ body {
 <nav class="d-toc" id="TOC">
 <ul>
 <li><a href="#workflow-1-mapbox">Workflow 1: Mapbox</a><ul>
-<li><a href="#step-1">Step 1</a></li>
-<li><a href="#step-2">Step 2</a></li>
-<li><a href="#step-3">Step 3</a></li>
-<li><a href="#step-4">Step 4</a></li>
-<li><a href="#step-5">Step 5</a></li>
+<li><a href="#step-1-set-up">Step 1: Set up</a></li>
+<li><a href="#step-2-get-geometries">Step 2: Get geometries</a></li>
+<li><a href="#step-3-optimize-geometries">Step 3: Optimize geometries</a></li>
+<li><a href="#step-4-upload-to-api">Step 4: Upload to API</a></li>
+<li><a href="#step-5-bring-it-back-to-r">Step 5: Bring it back to R</a></li>
 </ul></li>
 <li><a href="#workflow-2-r2d3map">Workflow 2: r2d3map</a><ul>
 <li><a href="#using-d3_map">Using <code>d3_map()</code>:</a></li>
@@ -1362,7 +1362,7 @@ body {
 <h2 id="workflow-1-mapbox">Workflow 1: Mapbox</h2>
 <p>Mapbox has been picking up tons of steam as of late. You might’ve seen that it’s what the New York Times uses for their COVID-19 maps: <a href="https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html" class="uri">https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html</a>. I was impressed with how rapidly they loaded in my browser and how fast the zooming was. I decided to figure out how to make a map with Mapbox because the Leaflet ones I was making for US county-level data were just too slow.</p>
 <p>Here’s how I did it with Mapbox:</p>
-<h3 id="step-1">Step 1</h3>
+<h3 id="step-1-set-up">Step 1: Set up</h3>
 <p>Kyle Walker made an awesome package that allows us to interface with Mapbox’s API called <strong>{mapboxapi}</strong>. Install it in R:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
@@ -1374,7 +1374,7 @@ remotes::install_github(&quot;walkerke/mapboxapi&quot;)</code></pre>
 library(mapboxapi)
 mb_access_token(&quot;pk.eyas...&quot;, install = TRUE)</code></pre>
 </div>
-<h3 id="step-2">Step 2</h3>
+<h3 id="step-2-get-geometries">Step 2: Get geometries</h3>
 <p>Fetch the geometries you need. Here, I get US counties from <strong>{tigris}</strong>. Then, I join them to my data and finally simplify the geometries to make them more lightweight using <code>ms_simplify()</code> from the <strong>{rmapshaper}</strong> package.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
@@ -1389,7 +1389,7 @@ data &lt;-
   ms_simplify()</code></pre>
 </div>
 <p>Your data is of class <code>sf</code> now!</p>
-<h3 id="step-3">Step 3</h3>
+<h3 id="step-3-optimize-geometries">Step 3: Optimize geometries</h3>
 <p>Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn’t let you. This is when <strong>Tippecanoe</strong> comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an “mbtiles” file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are lightning fast.</p>
 <p>You need to install Tippecanoe via your terminal using homebrew. If you don’t have homebrew, go here and download it: <a href="https://brew.sh" class="uri">https://brew.sh</a>.</p>
 <p>In your terminal:</p>
@@ -1405,7 +1405,7 @@ tippecanoe(
   output = &quot;my_tiles.mbtiles&quot;,
   layer_name = &quot;my_tiles&quot;) </code></pre>
 </div>
-<h3 id="step-4">Step 4</h3>
+<h3 id="step-4-upload-to-api">Step 4: Upload to API</h3>
 <p>Once your mbtiles file is created, you need to upload it to Mapbox using <code>upload_tiles()</code>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
@@ -1416,7 +1416,7 @@ upload_tiles(input = &quot;my_tiles.mbtiles&quot;,
 </div>
 <p>Go to Mapbox Studio. You should see your mbtiles uploaded. Start styling!</p>
 <p>If you want to start from <em>something</em>, you can tinker with mine by adding my map to your styles using this link: <a href="https://api.mapbox.com/styles/v1/atoumi/ckddsbc903xey1io2y1nxiowx.html?fresh=true&amp;title=copy&amp;access_token=pk.eyJ1IjoiYXRvdW1pIiwiYSI6ImNrZGFqM3lhZzBpYjkyeXJ5djVxdXozZ2gifQ.N6IaEvOeboUvhKxjgSDPnQ" class="uri">https://api.mapbox.com/styles/v1/atoumi/ckddsbc903xey1io2y1nxiowx.html?fresh=true&amp;title=copy&amp;access_token=pk.eyJ1IjoiYXRvdW1pIiwiYSI6ImNrZGFqM3lhZzBpYjkyeXJ5djVxdXozZ2gifQ.N6IaEvOeboUvhKxjgSDPnQ</a></p>
-<h3 id="step-5">Step 5</h3>
+<h3 id="step-5-bring-it-back-to-r">Step 5: Bring it back to R</h3>
 <p>When you’re done styling, you can either publish directly or bring it back to R using the <strong>{mapdeck}</strong> package.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
