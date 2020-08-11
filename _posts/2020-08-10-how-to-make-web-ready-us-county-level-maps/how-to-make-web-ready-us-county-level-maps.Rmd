@@ -1,0 +1,168 @@
+---
+title: "How to make web-ready US county-level maps"
+description: |
+  Here, I will describe 2 workflows to get you up and running in making fast, web-ready maps.
+author:
+  - name: Asmae Toumi
+    url: https://twitter.com/asmae_toumi
+date: 08-10-2020
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+Code is up on my github at <https://github.com/asmae-toumi/spatialR> and here I'll rapidly go over the two workflows I like. If you see something wrong or need more explaining, hit me up on Twitter @asmae_toumi. 
+
+## Workflow 1: Mapbox
+
+Mapbox has been picking up tons of steam as of late. You might've seen that it's what the New York Times uses for their COVID-19 maps: <https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html>. I was impressed with how rapidly it loaded in my browser and how fast the zoom was. I decided to figure out how to make a map with Mapbox because the Leaflet ones I was making for US county-level data was just too slow. 
+
+Here's how I did it with Mapbox:
+
+### Step 1
+
+Kyle Walker made an awesome package that allows us to interface with Mapbox's API called `mapboxapi`. Install it in R:
+
+```{r eval = F, echo = T}
+remotes::install_github("walkerke/mapboxapi")
+```
+
+Go to Mapbox and create an account. Generate a token and save it with `mb_access_token()` like so:
+
+```{r eval = F, echo = T}
+library(mapboxapi)
+mb_access_token("pk.eyas...", install = TRUE)
+```
+
+### Step 2 
+
+Fetch the geometries you need. Here, I get US counties from {tigris}. Then, I join them to my data and finally simplify the geometries to make them more lightweight using `ms_simplify()` from the {rmapshaper} package. 
+
+```{r eval = F, echo = T}
+library(tidyverse)
+library(tigris)
+library(sf)
+library(rmapshaper)
+
+data <- 
+  tigris::counties(class = "sf") %>% 
+  geo_join(data, by_sp = "GEOID", by_df = "GEOID") %>% 
+  ms_simplify()
+```
+
+Your data is of class sf now!
+
+### Step 3 
+
+Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn't let you. This is when Tippecanoe comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an "mbtiles" file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are ligthning fast.
+
+You need to install Tippecanoe via your terminal using homebrew. If you don't have homebrew, go here and download it: https://brew.sh. 
+
+In your terminal: 
+
+```{r eval = F, echo = T}
+brew install tippecanoe
+```
+
+Once you have it installed on your computer, use the `tippecanoe()` command from {mapboxapi} to create your mbtiles file like so:
+
+```{r eval = F, echo = T}
+tippecanoe(
+  input = my_tiles,
+  output = "my_tiles.mbtiles",
+  layer_name = "my_tiles") 
+```
+
+### Step 4
+
+Once your mbtiles file is created, you need to upload it to Mapbox using `upload_tiles()`:
+
+```{r eval = F, echo = T}
+upload_tiles(input = "my_tiles.mbtiles",
+             username = "YOUR_USERNAME", 
+             tileset_id = "my_tiles",
+             multipart = TRUE)
+```
+
+Go to Mapbox Studio. You should see your mbtiles uploaded. Start styling!
+
+If you want to start from *something*, you can tinker with mine by adding my map to your styles using this link: <https://api.mapbox.com/styles/v1/atoumi/ckddsbc903xey1io2y1nxiowx.html?fresh=true&title=copy&access_token=pk.eyJ1IjoiYXRvdW1pIiwiYSI6ImNrZGFqM3lhZzBpYjkyeXJ5djVxdXozZ2gifQ.N6IaEvOeboUvhKxjgSDPnQ>  
+
+
+### Step 5
+
+When you're done styling, you can either publish directly or bring it back to R using the {mapdeck} package. 
+
+```{r eval = F, echo = T}
+mapdeck(token = Sys.getenv("MAPBOX_PUBLIC_TOKEN"),
+        style = "mapbox://styles/atoumi/ckddsbc903xey1io2y1nxiowx",
+        zoom = 6,
+        location = c(-98.7382803, 31.7678448)) # if it doesn't show up in your viewer, view in browser
+```
+
+Now that it's in R, you can further edit it and even place it in a Shiny app using `mapdeckOutput()` in the UI and `renderMapdeck()` in the server!
+
+
+## Workflow 2: r2d3map 
+
+The amazing dreamRs team is behind the {r2d3maps} package which allows you to make D3 maps in a flash. Check out their documentation to get a taste of what you can make. You can also try out my fully worked example on Github. It's absurdly easy to get your map up on the web using Shiny:
+
+```{r eval = F, echo = T}
+# UI ----------------------------------------------------------------------
+
+ui <- navbarPage("Fun with r2d3map", id="nav", 
+                 
+                 tabPanel(
+                   "Interactive map",
+                   withSpinner(d3Output(outputId = "mymap", width = "900px", height = "500px"))),
+                 
+                 tabPanel("Explore the data",
+                          DT::dataTableOutput("table"))
+)
+
+
+# Server ------------------------------------------------------------------
+
+server <- function(input, output) {
+  
+  show_waiter(spin_fading_circles())
+  # map panel 
+  output$mymap <- renderD3({
+    d3_map(shape = cty_sf_joined, projection = "Albers") %>%
+      add_labs(caption = "Viz: Asmae Toumi | Data: CDC") %>% 
+      add_continuous_breaks(var = "rpl_theme1", palette = "Reds") %>%
+      add_legend(title = "Socioeconomic Vulnerability (percentile)") %>%
+      add_tooltip("<b>{location}</b>: {rpl_theme1}")
+  })
+  
+  # data panel
+  output$table <- DT::renderDataTable({
+     DT::datatable(svi, rownames = F,  filter = 'top',
+                  extensions = c('Buttons', 'FixedHeader', 'Scroller'),
+                  options = list(pageLength = 15, lengthChange = F,
+                                 fixedHeader = TRUE,
+                                 dom = 'lfBrtip',
+                                 list('copy', 'print', list(
+                                   extend = 'collection',
+                                   buttons = c('csv', 'excel', 'pdf'),
+                                   text = 'Download'
+                                 ))
+                  ))
+  })
+  
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+## The end 
+
+Hope you enjoyed my walkthrough. Everything is on Github if you want to see for yourself: https://github.com/asmae-toumi/spatialR
+
+Happy mapping!
+
+
+
+
+
+
