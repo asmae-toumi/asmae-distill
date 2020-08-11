@@ -1411,6 +1411,7 @@ mapdeck(token = Sys.getenv(&quot;MAPBOX_PUBLIC_TOKEN&quot;),
 <p>The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with <strong>Mapbox GL JS</strong>, which is Mapbox’s JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the <code>index.html</code> in my Github. Be sure to include your own access token before rendering it.</p>
 <p>Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. This is why I like workflow 2, because nothing is better than FREE.</p>
 <h2 id="workflow-2-r2d3map">Workflow 2: r2d3map</h2>
+<h3 id="using-d3_map">Using <code>d3_map()</code>:</h3>
 <p>The amazing dreamRs team is behind the <strong>{r2d3maps}</strong> package which allows you to make <strong>D3</strong> maps in a flash. Check out their documentation to get a taste of what you can make. You can also try out my fully worked example on Github. It’s absurdly easy to get your map up on the web using <strong>{Shiny}</strong>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
@@ -1460,6 +1461,23 @@ server &lt;- function(input, output) {
 
 shinyApp(ui = ui, server = server)</code></pre>
 </div>
+<h3 id="make-your-own">Make your own</h3>
+<p>You don’t have to use <code>d3_map()</code>, you can make your using pure D3 code.</p>
+<p>First, you need to convert your data from an <code>sf</code> object to a <code>topojson</code> object using the handy <code>r2d3map()</code> command:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+r2d3map(
+  data = my_data,
+  script = &quot;my_map.js&quot;
+)</code></pre>
+</div>
+<p>Then, call <code>use_r2d3map()</code> to create a minimal template. It will create the 3 scripts you need to get your map working: an R script, a JS script and a CSS script.</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+use_r2d3map(&quot;my_map.js&quot;)</code></pre>
+</div>
+<p>A fun exercise would be to try and recreate this striking chloropleth using <code>use_r2d3map()</code>: <a href="http://bl.ocks.org/syntagmatic/623a3221d3e694f85967d83082fd4a77" class="uri">http://bl.ocks.org/syntagmatic/623a3221d3e694f85967d83082fd4a77</a>.</p>
+<p>Let me know if you do!</p>
 <h2 id="the-end">The end</h2>
 <p>Hope you enjoyed my walkthrough. Everything is on Github if you want to see for yourself: <a href="https://github.com/asmae-toumi/spatialR" class="uri">https://github.com/asmae-toumi/spatialR</a></p>
 <p>Happy mapping!</p>

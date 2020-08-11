@@ -110,6 +110,8 @@ Another downside is that Mapbox is going to start charging soon for uploading ti
 
 ## Workflow 2: r2d3map 
 
+### Using `d3_map()`: 
+
 The amazing dreamRs team is behind the **{r2d3maps}** package which allows you to make **D3** maps in a flash. Check out their documentation to get a taste of what you can make. You can also try out my fully worked example on Github. It's absurdly easy to get your map up on the web using **{Shiny}**:
 
 ```{r eval = F, echo = T}
@@ -159,6 +161,30 @@ server <- function(input, output) {
 
 shinyApp(ui = ui, server = server)
 ```
+
+### Make your own
+
+You don't have to use `d3_map()`, you can make your using pure D3 code. 
+
+First, you need to convert your data from an `sf` object to a `topojson` object using the handy `r2d3map()` command:
+
+```{r eval = F, echo = T}
+r2d3map(
+  data = my_data,
+  script = "my_map.js"
+)
+```
+
+Then, call `use_r2d3map()` to create a minimal template. It will create the 3 scripts you need to get your map working: an R script, a JS script and a CSS script.
+
+```{r eval = F, echo = T}
+use_r2d3map("my_map.js")
+```
+
+A fun exercise would be to try and recreate this striking chloropleth using `use_r2d3map()`: <http://bl.ocks.org/syntagmatic/623a3221d3e694f85967d83082fd4a77>. 
+
+Let me know if you do!
+
 
 ## The end 
 
