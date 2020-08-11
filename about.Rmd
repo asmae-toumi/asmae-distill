@@ -1,9 +1,7 @@
 ---
 title: "About me"
-description: |
-  I'm EIC of Hockey-Graphs and a professional data analyst in the healthcare space
+
+  
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
+I'm EIC of Hockey-Graphs and a data analyst in the healthcare space.

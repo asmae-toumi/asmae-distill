@@ -11,7 +11,7 @@ output:
     self_contained: false
 ---
 
-Code is up on my github at <https://github.com/asmae-toumi/spatialR> and here I'll rapidly go over the two workflows I like. If you see something wrong or need more explaining, hit me up on Twitter @asmae_toumi. 
+Code is up on my github at <https://github.com/asmae-toumi/spatialR> and here I'll rapidly go over the two workflows I like. If you see something wrong or need more explaining, hit me up on Twitter. 
 
 ## Workflow 1: Mapbox
 
@@ -21,7 +21,7 @@ Here's how I did it with Mapbox:
 
 ### Step 1
 
-Kyle Walker made an awesome package that allows us to interface with Mapbox's API called `mapboxapi`. Install it in R:
+Kyle Walker made an awesome package that allows us to interface with Mapbox's API called **{mapboxapi}**. Install it in R:
 
 ```{r eval = F, echo = T}
 remotes::install_github("walkerke/mapboxapi")
@@ -36,7 +36,7 @@ mb_access_token("pk.eyas...", install = TRUE)
 
 ### Step 2 
 
-Fetch the geometries you need. Here, I get US counties from {tigris}. Then, I join them to my data and finally simplify the geometries to make them more lightweight using `ms_simplify()` from the {rmapshaper} package. 
+Fetch the geometries you need. Here, I get US counties from **{tigris}**. Then, I join them to my data and finally simplify the geometries to make them more lightweight using `ms_simplify()` from the **{rmapshaper}** package. 
 
 ```{r eval = F, echo = T}
 library(tidyverse)
@@ -54,7 +54,7 @@ Your data is of class sf now!
 
 ### Step 3 
 
-Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn't let you. This is when Tippecanoe comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an "mbtiles" file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are ligthning fast.
+Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn't let you. This is when **Tippecanoe** comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an "mbtiles" file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are ligthning fast.
 
 You need to install Tippecanoe via your terminal using homebrew. If you don't have homebrew, go here and download it: https://brew.sh. 
 
@@ -91,7 +91,7 @@ If you want to start from *something*, you can tinker with mine by adding my map
 
 ### Step 5
 
-When you're done styling, you can either publish directly or bring it back to R using the {mapdeck} package. 
+When you're done styling, you can either publish directly or bring it back to R using the **{mapdeck}** package. 
 
 ```{r eval = F, echo = T}
 mapdeck(token = Sys.getenv("MAPBOX_PUBLIC_TOKEN"),
@@ -110,7 +110,7 @@ Another downside is that Mapbox is going to start charging soon for uploading ti
 
 ## Workflow 2: r2d3map 
 
-The amazing dreamRs team is behind the {r2d3maps} package which allows you to make D3 maps in a flash. Check out their documentation to get a taste of what you can make. You can also try out my fully worked example on Github. It's absurdly easy to get your map up on the web using Shiny:
+The amazing dreamRs team is behind the **{r2d3maps}** package which allows you to make **D3** maps in a flash. Check out their documentation to get a taste of what you can make. You can also try out my fully worked example on Github. It's absurdly easy to get your map up on the web using **{Shiny}**:
 
 ```{r eval = F, echo = T}
 # UI ----------------------------------------------------------------------

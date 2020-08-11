@@ -1340,12 +1340,12 @@ body {
 </div>
 
 <div class="d-article">
-<p>Code is up on my github at <a href="https://github.com/asmae-toumi/spatialR" class="uri">https://github.com/asmae-toumi/spatialR</a> and here I’ll rapidly go over the two workflows I like. If you see something wrong or need more explaining, hit me up on Twitter <span class="citation" data-cites="asmae_toumi">@asmae_toumi</span>.</p>
+<p>Code is up on my github at <a href="https://github.com/asmae-toumi/spatialR" class="uri">https://github.com/asmae-toumi/spatialR</a> and here I’ll rapidly go over the two workflows I like. If you see something wrong or need more explaining, hit me up on Twitter.</p>
 <h2 id="workflow-1-mapbox">Workflow 1: Mapbox</h2>
 <p>Mapbox has been picking up tons of steam as of late. You might’ve seen that it’s what the New York Times uses for their COVID-19 maps: <a href="https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html" class="uri">https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html</a>. I was impressed with how rapidly it loaded in my browser and how fast the zoom was. I decided to figure out how to make a map with Mapbox because the Leaflet ones I was making for US county-level data was just too slow.</p>
 <p>Here’s how I did it with Mapbox:</p>
 <h3 id="step-1">Step 1</h3>
-<p>Kyle Walker made an awesome package that allows us to interface with Mapbox’s API called <code>mapboxapi</code>. Install it in R:</p>
+<p>Kyle Walker made an awesome package that allows us to interface with Mapbox’s API called <strong>{mapboxapi}</strong>. Install it in R:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 remotes::install_github(&quot;walkerke/mapboxapi&quot;)</code></pre>
@@ -1357,7 +1357,7 @@ library(mapboxapi)
 mb_access_token(&quot;pk.eyas...&quot;, install = TRUE)</code></pre>
 </div>
 <h3 id="step-2">Step 2</h3>
-<p>Fetch the geometries you need. Here, I get US counties from {tigris}. Then, I join them to my data and finally simplify the geometries to make them more lightweight using <code>ms_simplify()</code> from the {rmapshaper} package.</p>
+<p>Fetch the geometries you need. Here, I get US counties from <strong>{tigris}</strong>. Then, I join them to my data and finally simplify the geometries to make them more lightweight using <code>ms_simplify()</code> from the <strong>{rmapshaper}</strong> package.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 library(tidyverse)
@@ -1372,7 +1372,7 @@ data &lt;-
 </div>
 <p>Your data is of class sf now!</p>
 <h3 id="step-3">Step 3</h3>
-<p>Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn’t let you. This is when Tippecanoe comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an “mbtiles” file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are ligthning fast.</p>
+<p>Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn’t let you. This is when <strong>Tippecanoe</strong> comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an “mbtiles” file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are ligthning fast.</p>
 <p>You need to install Tippecanoe via your terminal using homebrew. If you don’t have homebrew, go here and download it: <a href="https://brew.sh" class="uri">https://brew.sh</a>.</p>
 <p>In your terminal:</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1399,7 +1399,7 @@ upload_tiles(input = &quot;my_tiles.mbtiles&quot;,
 <p>Go to Mapbox Studio. You should see your mbtiles uploaded. Start styling!</p>
 <p>If you want to start from <em>something</em>, you can tinker with mine by adding my map to your styles using this link: <a href="https://api.mapbox.com/styles/v1/atoumi/ckddsbc903xey1io2y1nxiowx.html?fresh=true&amp;title=copy&amp;access_token=pk.eyJ1IjoiYXRvdW1pIiwiYSI6ImNrZGFqM3lhZzBpYjkyeXJ5djVxdXozZ2gifQ.N6IaEvOeboUvhKxjgSDPnQ" class="uri">https://api.mapbox.com/styles/v1/atoumi/ckddsbc903xey1io2y1nxiowx.html?fresh=true&amp;title=copy&amp;access_token=pk.eyJ1IjoiYXRvdW1pIiwiYSI6ImNrZGFqM3lhZzBpYjkyeXJ5djVxdXozZ2gifQ.N6IaEvOeboUvhKxjgSDPnQ</a></p>
 <h3 id="step-5">Step 5</h3>
-<p>When you’re done styling, you can either publish directly or bring it back to R using the {mapdeck} package.</p>
+<p>When you’re done styling, you can either publish directly or bring it back to R using the <strong>{mapdeck}</strong> package.</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 mapdeck(token = Sys.getenv(&quot;MAPBOX_PUBLIC_TOKEN&quot;),
@@ -1411,7 +1411,7 @@ mapdeck(token = Sys.getenv(&quot;MAPBOX_PUBLIC_TOKEN&quot;),
 <p>The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with <strong>Mapbox GL JS</strong>, which is Mapbox’s JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the <code>index.html</code> in my Github. Be sure to include your own access token before rendering it.</p>
 <p>Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. This is why I like workflow 2, because nothing is better than FREE.</p>
 <h2 id="workflow-2-r2d3map">Workflow 2: r2d3map</h2>
-<p>The amazing dreamRs team is behind the {r2d3maps} package which allows you to make D3 maps in a flash. Check out their documentation to get a taste of what you can make. You can also try out my fully worked example on Github. It’s absurdly easy to get your map up on the web using Shiny:</p>
+<p>The amazing dreamRs team is behind the <strong>{r2d3maps}</strong> package which allows you to make <strong>D3</strong> maps in a flash. Check out their documentation to get a taste of what you can make. You can also try out my fully worked example on Github. It’s absurdly easy to get your map up on the web using <strong>{Shiny}</strong>:</p>
 <div class="layout-chunk" data-layout="l-body">
 <pre class="r"><code>
 # UI ----------------------------------------------------------------------
