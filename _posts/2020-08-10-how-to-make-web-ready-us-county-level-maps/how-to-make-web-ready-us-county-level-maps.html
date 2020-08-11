@@ -44,7 +44,7 @@
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["How to make web-ready US county-level maps"]},{"type":"character","attributes":{},"value":["Here, I will describe 2 workflows to get you up and running in making fast, web-ready maps.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Asmae Toumi"]},{"type":"character","attributes":{},"value":["https://twitter.com/asmae_toumi"]}]}]},{"type":"character","attributes":{},"value":["08-10-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["How to make web-ready US county-level maps"]},{"type":"character","attributes":{},"value":["Here, I will describe 2 workflows to get you up and running in making fast, web-ready maps.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Asmae Toumi"]},{"type":"character","attributes":{},"value":["https://twitter.com/asmae_toumi"]}]}]},{"type":"character","attributes":{},"value":["08-10-2020"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained","toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[false]},{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[3]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -973,7 +973,25 @@
 </div>
 
 <div class="d-article">
-<p>Code is up on my github at <a href="https://github.com/asmae-toumi/spatialR" class="uri">https://github.com/asmae-toumi/spatialR</a> and here I’ll rapidly go over the two workflows I like. If you see something wrong or need more explaining, hit me up on Twitter.</p>
+<h3 class="d-toc-header">Table of Contents</h3>
+<nav class="d-toc" id="TOC">
+<ul>
+<li><a href="#workflow-1-mapbox">Workflow 1: Mapbox</a><ul>
+<li><a href="#step-1">Step 1</a></li>
+<li><a href="#step-2">Step 2</a></li>
+<li><a href="#step-3">Step 3</a></li>
+<li><a href="#step-4">Step 4</a></li>
+<li><a href="#step-5">Step 5</a></li>
+</ul></li>
+<li><a href="#workflow-2-r2d3map">Workflow 2: r2d3map</a><ul>
+<li><a href="#using-d3_map">Using <code>d3_map()</code>:</a></li>
+<li><a href="#make-your-own">Make your own</a></li>
+</ul></li>
+<li><a href="#the-end">The end</a></li>
+</ul>
+</nav>
+<hr class="d-toc-separator"/>
+<p>Code is up on my GitHub at <a href="https://github.com/asmae-toumi/spatialR" class="uri">https://github.com/asmae-toumi/spatialR</a> and here I’ll rapidly go over the two workflows I like. If you see something wrong or need more explaining, hit me up on Twitter.</p>
 <h2 id="workflow-1-mapbox">Workflow 1: Mapbox</h2>
 <p>Mapbox has been picking up tons of steam as of late. You might’ve seen that it’s what the New York Times uses for their COVID-19 maps: <a href="https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html" class="uri">https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html</a>. I was impressed with how rapidly they loaded in my browser and how fast the zooming was. I decided to figure out how to make a map with Mapbox because the Leaflet ones I was making for US county-level data were just too slow.</p>
 <p>Here’s how I did it with Mapbox:</p>
@@ -1005,7 +1023,7 @@ data &lt;-
 </div>
 <p>Your data is of class <code>sf</code> now!</p>
 <h3 id="step-3">Step 3</h3>
-<p>Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn’t let you. This is when <strong>Tippecanoe</strong> comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an “mbtiles” file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are ligthning fast.</p>
+<p>Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn’t let you. This is when <strong>Tippecanoe</strong> comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an “mbtiles” file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are lightning fast.</p>
 <p>You need to install Tippecanoe via your terminal using homebrew. If you don’t have homebrew, go here and download it: <a href="https://brew.sh" class="uri">https://brew.sh</a>.</p>
 <p>In your terminal:</p>
 <div class="layout-chunk" data-layout="l-body">
@@ -1041,7 +1059,7 @@ mapdeck(token = Sys.getenv(&quot;MAPBOX_PUBLIC_TOKEN&quot;),
         location = c(-98.7382803, 31.7678448)) # if it doesn&#39;t show up in your viewer, view in browser</code></pre>
 </div>
 <p>Now that it’s in R, you can further edit it and even place it in a Shiny app using <code>mapdeckOutput()</code> in the UI and <code>renderMapdeck()</code> in the server!</p>
-<p>The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with <strong>Mapbox GL JS</strong>, which is Mapbox’s JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the <code>index.html</code> in my Github. Be sure to include your own access token before rendering it.</p>
+<p>The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with <strong>Mapbox GL JS</strong>, which is Mapbox’s JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the <code>index.html</code> in my GitHub. Be sure to include your own access token before rendering it.</p>
 <p>Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. <strong>This is why I like workflow 2, because nothing is better than FREE</strong>.</p>
 <h2 id="workflow-2-r2d3map">Workflow 2: r2d3map</h2>
 <h3 id="using-d3_map">Using <code>d3_map()</code>:</h3>
@@ -1112,7 +1130,7 @@ use_r2d3map(&quot;my_map.js&quot;)</code></pre>
 <p>A fun exercise would be to try and recreate this striking chloropleth using <code>use_r2d3map()</code>: <a href="http://bl.ocks.org/syntagmatic/623a3221d3e694f85967d83082fd4a77" class="uri">http://bl.ocks.org/syntagmatic/623a3221d3e694f85967d83082fd4a77</a>.</p>
 <p>Let me know if you do!</p>
 <h2 id="the-end">The end</h2>
-<p>Hope you enjoyed my walkthrough. Everything is on Github if you want to see for yourself: <a href="https://github.com/asmae-toumi/spatialR" class="uri">https://github.com/asmae-toumi/spatialR</a></p>
+<p>Hope you enjoyed my walkthrough. Everything is on GitHub if you want to see for yourself: <a href="https://github.com/asmae-toumi/spatialR" class="uri">https://github.com/asmae-toumi/spatialR</a></p>
 <p>Happy mapping!</p>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

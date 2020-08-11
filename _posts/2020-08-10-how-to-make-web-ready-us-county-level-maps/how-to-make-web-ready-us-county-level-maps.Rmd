@@ -9,9 +9,11 @@ date: 08-10-2020
 output:
   distill::distill_article:
     self_contained: false
+    toc: true
+    toc_depth: 3
 ---
 
-Code is up on my github at <https://github.com/asmae-toumi/spatialR> and here I'll rapidly go over the two workflows I like. If you see something wrong or need more explaining, hit me up on Twitter. 
+Code is up on my GitHub at <https://github.com/asmae-toumi/spatialR> and here I'll rapidly go over the two workflows I like. If you see something wrong or need more explaining, hit me up on Twitter. 
 
 ## Workflow 1: Mapbox
 
@@ -54,7 +56,7 @@ Your data is of class `sf` now!
 
 ### Step 3 
 
-Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn't let you. This is when **Tippecanoe** comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an "mbtiles" file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are ligthning fast.
+Our data is big, not that big but big enough that if you wanted to upload it directly to Mapbox Studio it probably wouldn't let you. This is when **Tippecanoe** comes in. Tippecanoe converts your data into much smaller files. It does so by creating vector tilesets from large GeoJSON feature collections. The output is an "mbtiles" file that can be uploaded to Mapbox. I think this tool is the secret behind why Mapbox maps are lightning fast.
 
 You need to install Tippecanoe via your terminal using homebrew. If you don't have homebrew, go here and download it: https://brew.sh. 
 
@@ -103,7 +105,7 @@ mapdeck(token = Sys.getenv("MAPBOX_PUBLIC_TOKEN"),
 
 Now that it's in R, you can further edit it and even place it in a Shiny app using `mapdeckOutput()` in the UI and `renderMapdeck()` in the server!
 
-The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with **Mapbox GL JS**, which is Mapbox's JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the `index.html` in my Github. Be sure to include your own access token before rendering it.
+The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with **Mapbox GL JS**, which is Mapbox's JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the `index.html` in my GitHub. Be sure to include your own access token before rendering it.
 
 Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. **This is why I like workflow 2, because nothing is better than FREE**. 
 
@@ -188,7 +190,7 @@ Let me know if you do!
 
 ## The end 
 
-Hope you enjoyed my walkthrough. Everything is on Github if you want to see for yourself: https://github.com/asmae-toumi/spatialR
+Hope you enjoyed my walkthrough. Everything is on GitHub if you want to see for yourself: https://github.com/asmae-toumi/spatialR
 
 Happy mapping!
 
