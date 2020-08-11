@@ -103,11 +103,33 @@ mapdeck(token = Sys.getenv("MAPBOX_PUBLIC_TOKEN"),
 ```
 
 
-Now that it's in R, you can further edit it and even place it in a Shiny app using `mapdeckOutput()` in the UI and `renderMapdeck()` in the server!
+Now that it's in R, you can further edit it and even place it in a **{Shiny}** app using `mapdeckOutput()` in the UI and `renderMapdeck()` in the server! 
 
-The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with **Mapbox GL JS**, which is Mapbox's JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the `index.html` in my GitHub. Be sure to include your own access token before rendering it.
+The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with **Mapbox GL JS**, which is Mapbox's JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the `index.html` in my GitHub. Be sure to include your own access token before rendering it. You can also shove the entire `index.html` file inside {Shiny} like this:
 
-Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. **This is why I like workflow 2, because nothing is better than FREE**. 
+```{r eval = F, echo = T}
+
+# UI ----------------------------------------------------------------------
+ui <- navbarPage("Fun with Mapbox", id="nav",
+
+                 tabPanel(
+                   "Interactive map",
+                   includeHTML("index.html")
+                 )
+)
+
+
+# Server ------------------------------------------------------------------
+
+server <- function(input, output) { }
+
+shinyApp(ui = ui, server = server)
+
+```
+
+
+
+Another downside is that Mapbox is going to start charging money soon for uploading tiles to their API. **This is why I like workflow 2, because nothing is better than FREE**. 
 
 
 ## Workflow 2: r2d3map 
@@ -117,6 +139,7 @@ Another downside is that Mapbox is going to start charging soon for uploading ti
 The amazing dreamRs team is behind the **{r2d3maps}** package which allows you to make **D3** maps in a flash. Check out their documentation to get a taste of what you can make: <https://github.com/dreamRs/r2d3maps>. You can also try out my fully worked out examples on Github. I have a regular R script, and a quick demo on **{Shiny}**. It's absurdly easy to get your map up on the web using {Shiny}:
 
 ```{r eval = F, echo = T}
+
 # UI ----------------------------------------------------------------------
 
 ui <- navbarPage("Fun with r2d3map", id="nav", 

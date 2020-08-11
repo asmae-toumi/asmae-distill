@@ -1058,9 +1058,27 @@ mapdeck(token = Sys.getenv(&quot;MAPBOX_PUBLIC_TOKEN&quot;),
         zoom = 6,
         location = c(-98.7382803, 31.7678448)) # if it doesn&#39;t show up in your viewer, view in browser</code></pre>
 </div>
-<p>Now that it’s in R, you can further edit it and even place it in a Shiny app using <code>mapdeckOutput()</code> in the UI and <code>renderMapdeck()</code> in the server!</p>
-<p>The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with <strong>Mapbox GL JS</strong>, which is Mapbox’s JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the <code>index.html</code> in my GitHub. Be sure to include your own access token before rendering it.</p>
-<p>Another downside is that Mapbox is going to start charging soon for uploading tiles to their API. <strong>This is why I like workflow 2, because nothing is better than FREE</strong>.</p>
+<p>Now that it’s in R, you can further edit it and even place it in a <strong>{Shiny}</strong> app using <code>mapdeckOutput()</code> in the UI and <code>renderMapdeck()</code> in the server!</p>
+<p>The downside with this workflow is that if you want to add a legend or hover/popup elements, you need to get acquainted with <strong>Mapbox GL JS</strong>, which is Mapbox’s JavaScript library that uses WebGL to render interactive maps from vector tiles and Mapbox styles. You can see how I made my map interactive with some JS by checking out the <code>index.html</code> in my GitHub. Be sure to include your own access token before rendering it. You can also shove the entire <code>index.html</code> file inside {Shiny} like this:</p>
+<div class="layout-chunk" data-layout="l-body">
+<pre class="r"><code>
+# UI ----------------------------------------------------------------------
+ui &lt;- navbarPage(&quot;Fun with Mapbox&quot;, id=&quot;nav&quot;,
+
+                 tabPanel(
+                   &quot;Interactive map&quot;,
+                   includeHTML(&quot;index.html&quot;)
+                 )
+)
+
+
+# Server ------------------------------------------------------------------
+
+server &lt;- function(input, output) { }
+
+shinyApp(ui = ui, server = server)</code></pre>
+</div>
+<p>Another downside is that Mapbox is going to start charging money soon for uploading tiles to their API. <strong>This is why I like workflow 2, because nothing is better than FREE</strong>.</p>
 <h2 id="workflow-2-r2d3map">Workflow 2: r2d3map</h2>
 <h3 id="using-d3_map">Using <code>d3_map()</code>:</h3>
 <p>The amazing dreamRs team is behind the <strong>{r2d3maps}</strong> package which allows you to make <strong>D3</strong> maps in a flash. Check out their documentation to get a taste of what you can make: <a href="https://github.com/dreamRs/r2d3maps" class="uri">https://github.com/dreamRs/r2d3maps</a>. You can also try out my fully worked out examples on Github. I have a regular R script, and a quick demo on <strong>{Shiny}</strong>. It’s absurdly easy to get your map up on the web using {Shiny}:</p>
@@ -1083,7 +1101,6 @@ ui &lt;- navbarPage(&quot;Fun with r2d3map&quot;, id=&quot;nav&quot;,
 
 server &lt;- function(input, output) {
   
-  show_waiter(spin_fading_circles())
   # map panel 
   output$mymap &lt;- renderD3({
     d3_map(shape = cty_sf_joined, projection = &quot;Albers&quot;) %&gt;%
