@@ -99,7 +99,8 @@ When you're done styling, you can either publish directly or bring it back to R 
 mapdeck(token = Sys.getenv("MAPBOX_PUBLIC_TOKEN"),
         style = "mapbox://styles/atoumi/ckddsbc903xey1io2y1nxiowx",
         zoom = 6,
-        location = c(-98.7382803, 31.7678448)) # if it doesn't show up in your viewer, view in browser
+        location = c(-98.7382803, 31.7678448)) 
+        # if it doesn't show up in your viewer, view in browser
 ```
 
 
@@ -146,8 +147,10 @@ ui <- navbarPage("Fun with r2d3map", id="nav",
                  
                  tabPanel(
                    "Interactive map",
-                   withSpinner(d3Output(outputId = "mymap", 
-                                        width = "900px", height = "500px"))),
+                   withSpinner(d3Output(
+                     outputId = "mymap", 
+                     width = "900px", 
+                     height = "500px"))),
                  
                  tabPanel("Explore the data",
                           DT::dataTableOutput("table"))
@@ -212,7 +215,7 @@ Let me know if you do!
 
 ## Workflow 3: Leaflet 
 
-I was wrong! Leaflet doesn't have to be slow. The tigris package offers county shapefiles, and the secret is in specifying that you want lower resolution shapefiles. Let's make a county-level map of U.S. income data from the **{tidycensus}** package. First, we obtain the county-level income data from the 2014-2018 5-year American Community Survey (ACS) which we then join to the `cty` dataset using `tigris::geo_join`:
+I was wrong! **{Leaflet}** doesn't have to be slow. The **{tigris}** package offers county shapefiles, and the secret is in specifying that you want lower resolution shapefiles. Let's make a county-level map of U.S. income data from the **{tidycensus}** package. First, we obtain the county-level income data from the 2014-2018 5-year American Community Survey (ACS) which we then join to the `cty` dataset using `tigris::geo_join` :
 
 ```{r eval = T, echo = T, warning = F, message = F, results = 'hide'}
 library(tigris)
